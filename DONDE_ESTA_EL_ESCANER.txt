@@ -1,0 +1,154 @@
+╔════════════════════════════════════════════════════════════════════╗
+║              📸 CÓMO ENCONTRAR EL ESCÁNER DE ALIMENTOS            ║
+╚════════════════════════════════════════════════════════════════════╝
+
+PASO A PASO:
+═══════════════════════════════════════════════════════════════════════
+
+1️⃣  ABRE LA APLICACIÓN
+    └─ Verás la pantalla de LOGIN
+    └─ Si no tienes cuenta: "Crear Cuenta Nueva"
+    └─ Si ya tienes cuenta: Inicia sesión
+
+2️⃣  COMPLETA EL ONBOARDING (4 pasos)
+    └─ Datos básicos → Datos físicos → Actividad → Objetivo
+
+3️⃣  LLEGARÁS AL DASHBOARD
+    ┌───────────────────────────────────────────────┐
+    │  FitMacros                    [Salir]        │
+    │  Hola, [Tu Nombre]                           │
+    ├───────────────────────────────────────────────┤
+    │                                               │
+    │  [Gráfico Circular de Calorías]              │
+    │                                               │
+    │  [Proteínas]  [Carbos]  [Grasas]             │
+    │                                               │
+    │  ┌──────────────────────────────────────┐    │
+    │  │  [📅 Fecha]  [➕ Añadir Alimento] ←━━━━━━ ¡HAZ CLIC AQUÍ!
+    │  └──────────────────────────────────────┘    │
+    └───────────────────────────────────────────────┘
+
+4️⃣  HAZ CLIC EN "Añadir Alimento"
+    └─ Se abrirá una nueva pantalla
+
+5️⃣  VERÁS ESTA PANTALLA:
+    ┌───────────────────────────────────────────────┐
+    │  ← Volver     Añadir Alimento                │
+    ├───────────────────────────────────────────────┤
+    │  ┌─────────────────┬──────────────────────┐  │
+    │  │ Buscar Alimento │ Crear Personalizado  │  │
+    │  └─────────────────┴──────────────────────┘  │
+    │                                               │
+    │  ┌───────────────────────────────────────┐   │
+    │  │  🔍  Buscar alimento (pollo, arroz)   │   │
+    │  │                                       │   │
+    │  │  ╔═══════════════════════════════════╗│   │
+    │  │  ║ 📷 Escanear Alimento con Cámara  ║│ ←━━ ¡ESTE ES EL BOTÓN!
+    │  │  ╚═══════════════════════════════════╝│   │
+    │  └───────────────────────────────────────┘   │
+    │                                               │
+    │  [Lista de alimentos disponibles...]          │
+    └───────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════
+
+🎨 CARACTERÍSTICAS DEL BOTÓN:
+
+   Color:     Morado/Índigo claro
+   Ancho:     Ocupa todo el ancho
+   Icono:     📷 Cámara (a la izquierda)
+   Texto:     "Escanear Alimento con Cámara"
+   Posición:  Debajo del campo de búsqueda
+
+═══════════════════════════════════════════════════════════════════════
+
+📋 CHECKLIST:
+
+   ☐ 1. Inicia sesión o crea una cuenta nueva
+   ☐ 2. Completa el Onboarding si es primera vez (4 pasos)
+   ☐ 3. Llega al Dashboard
+   ☐ 4. Haz clic en "Añadir Alimento" (arriba derecha)
+   ☐ 5. Asegúrate de estar en la pestaña "Buscar Alimento"
+   ☐ 6. El botón está justo debajo del campo de búsqueda
+   ☐ 7. Tiene un color morado/índigo claro
+   ☐ 8. Tiene un icono de cámara 📷
+
+═══════════════════════════════════════════════════════════════════════
+
+❓ ¿SIGUES SIN VERLO?
+
+   Posibles causas:
+
+   ❌ No has iniciado sesión
+      → Completa el login o registro primero
+
+   ❌ No has completado el Onboarding
+      → Completa los 4 pasos si es primera vez
+
+   ❌ Estás en el Dashboard
+      → Haz clic en "Añadir Alimento"
+
+   ❌ Estás en "Crear Personalizado"
+      → Cambia a la pestaña "Buscar Alimento"
+
+   ❌ Error de código
+      → Abre la consola del navegador (F12)
+      → Mira si hay errores en rojo
+
+═══════════════════════════════════════════════════════════════════════
+
+🔧 COMANDOS DE DEPURACIÓN:
+
+   Si eres desarrollador y quieres verificar el código:
+
+   1. Verifica que el archivo existe:
+      $ ls src/app/components/FoodScanner.tsx
+
+   2. Verifica el import en AddFood:
+      $ grep "FoodScanner" src/app/components/AddFood.tsx
+
+   3. Busca el botón en el código:
+      $ grep -n "Escanear Alimento" src/app/components/AddFood.tsx
+
+═══════════════════════════════════════════════════════════════════════
+
+🎯 FLUJO COMPLETO:
+
+   Inicio
+     ↓
+   Pantalla LOGIN
+     ↓
+   ¿Tienes cuenta?
+     ├─ SÍ → Inicia sesión → Dashboard
+     └─ NO → "Crear Cuenta Nueva"
+         ↓
+   Onboarding (4 pasos) → Completa tu perfil
+     ↓
+   Dashboard → Ves tus macros y alimentos del día
+     ↓
+   Clic "Añadir Alimento" → Nueva pantalla
+     ↓
+   Pestaña "Buscar Alimento" → Primera pestaña (activa por defecto)
+     ↓
+   [Campo de búsqueda]
+     ↓
+   [📷 Escanear Alimento con Cámara] ← ¡AQUÍ ESTÁ!
+     ↓
+   Modal del escáner → Activa cámara
+     ↓
+   Captura foto → Analiza (2 seg en modo demo)
+     ↓
+   Resultado → Selecciona alimento
+     ↓
+   Añade al diario → ✅ Completo
+
+═══════════════════════════════════════════════════════════════════════
+
+📞 SOPORTE ADICIONAL:
+
+   Lee estos archivos:
+   - INICIO_RAPIDO.md
+   - GUIA_ESCANER_ALIMENTOS.md
+   - README.md
+
+═══════════════════════════════════════════════════════════════════════

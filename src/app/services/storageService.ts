@@ -7,11 +7,20 @@ import type { User, Food, FoodEntry, DailyLog } from '../types';
 
 const STORAGE_KEYS = {
   USERS: 'fitness_app_users',
+  PASSWORDS: 'fitness_app_passwords', // Almacena passwords separadas
   CURRENT_USER: 'fitness_app_current_user',
   FOODS: 'fitness_app_foods',
   DAILY_LOGS: 'fitness_app_daily_logs',
   TOKEN: 'fitness_app_token',
 } as const;
+
+/**
+ * Tipo para almacenar credenciales de usuario
+ */
+interface UserCredentials {
+  email: string;
+  passwordHash: string;
+}
 
 /**
  * Base de datos inicial de alimentos comunes
@@ -42,6 +51,37 @@ const INITIAL_FOODS: Food[] = [
 ];
 
 class StorageService {
+  /**
+   * Hash simple de password (en producción usar bcrypt)
+   */
+  private hashPassword(password: string): string {
+    // En producción, usar bcrypt o similar
+    // Esto es solo para demo (NO USAR EN PRODUCCIÓN REAL)
+    return btoa(password + 'salt_fitm acros');
+  }
+
+  /**
+   * Verifica password
+   */
+  private verifyPassword(password: string, hash: string): boolean {
+    return this.hashPassword(password) === hash;
+  }
+
+  /**
+   * Obtiene credenciales almacenadas
+   */
+  private getCredentials(): UserCredentials[] {
+    const creds = localStorage.getItem(STORAGE_KEYS.PASSWORDS);
+    return creds ? JSON.parse(creds) : [];
+  }
+
+  /**
+   * Guarda credenciales
+   */
+  private saveCredentials(credentials: UserCredentials[]): void {
+    localStorage.setItem(STORAGE_KEYS.PASSWORDS, JSON.stringify(credentials));
+  }
+
   /**
    * Inicializa la base de datos con alimentos predeterminados
    */
@@ -88,22 +128,34 @@ class StorageService {
   /**
    * Registra un usuario nuevo
    */
-  registerUser(userData: Omit<User, 'id' | 'createdAt'>): User {
+  registerUser(userData: Omit<User, 'id' | 'createdAt'> & { password: string }): User {
     const users = this.getAllUsers();
+    const credentials = this.getCredentials();
 
     // Verificar si el email ya existe
     if (users.some(u => u.email === userData.email)) {
       throw new Error('Email ya registrado');
     }
 
+    // Extraer password del userData
+    const { password, ...userDataWithoutPassword } = userData;
+
     const newUser: User = {
-      ...userData,
+      ...userDataWithoutPassword,
       id: `user_${Date.now()}`,
       createdAt: new Date().toISOString(),
     };
 
+    // Guardar usuario
     users.push(newUser);
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+
+    // Guardar credenciales por separado
+    credentials.push({
+      email: newUser.email,
+      passwordHash: this.hashPassword(password),
+    });
+    this.saveCredentials(credentials);
 
     return newUser;
   }
@@ -113,10 +165,23 @@ class StorageService {
    */
   loginUser(email: string, password: string): { user: User; token: string } {
     const users = this.getAllUsers();
-    const user = users.find(u => u.email === email);
+    const credentials = this.getCredentials();
 
+    // Buscar usuario
+    const user = users.find(u => u.email === email);
     if (!user) {
-      throw new Error('Usuario no encontrado');
+      throw new Error('Email o contraseña incorrectos');
+    }
+
+    // Verificar credenciales
+    const userCreds = credentials.find(c => c.email === email);
+    if (!userCreds) {
+      throw new Error('Email o contraseña incorrectos');
+    }
+
+    // Verificar password
+    if (!this.verifyPassword(password, userCreds.passwordHash)) {
+      throw new Error('Email o contraseña incorrectos');
     }
 
     // Generar token mock (en producción usarías JWT real)

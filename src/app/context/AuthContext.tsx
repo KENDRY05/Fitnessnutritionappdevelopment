@@ -9,7 +9,7 @@ import { storageService } from '../services/storageService';
 
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>;
-  register: (userData: Omit<User, 'id' | 'createdAt'>) => Promise<void>;
+  register: (userData: Omit<User, 'id' | 'createdAt'> & { password: string }) => Promise<void>;
   logout: () => void;
   updateProfile: (updates: Partial<User>) => void;
 }
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const register = async (userData: Omit<User, 'id' | 'createdAt'>) => {
+  const register = async (userData: Omit<User, 'id' | 'createdAt'> & { password: string }) => {
     try {
       const newUser = storageService.registerUser(userData);
       const token = btoa(`${newUser.id}:${Date.now()}`);

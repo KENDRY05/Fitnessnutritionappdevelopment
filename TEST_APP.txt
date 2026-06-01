@@ -1,0 +1,160 @@
+╔════════════════════════════════════════════════════════════════════╗
+║          CÓMO PROBAR EL ESCÁNER DIRECTAMENTE (DEBUGGING)          ║
+╚════════════════════════════════════════════════════════════════════╝
+
+Si quieres probar SOLO el escáner sin pasar por el Onboarding:
+
+═══════════════════════════════════════════════════════════════════════
+
+OPCIÓN 1: Modificar App.tsx temporalmente
+──────────────────────────────────────────────────────────────────────
+
+1. Abre: src/app/App.tsx
+
+2. Reemplaza el contenido por:
+
+```typescript
+import { TestScanner } from './components/TestScanner';
+
+export default function App() {
+  return <TestScanner />;
+}
+```
+
+3. Guarda el archivo
+
+4. Ahora verás directamente el botón de prueba del escáner
+
+5. Para volver a la app normal, deshaz los cambios
+
+═══════════════════════════════════════════════════════════════════════
+
+OPCIÓN 2: Limpiar localStorage (reiniciar app)
+──────────────────────────────────────────────────────────────────────
+
+Si ya te registraste pero quieres empezar de nuevo:
+
+1. Abre la consola del navegador (F12)
+
+2. Ve a la pestaña "Application" o "Almacenamiento"
+
+3. En el menú izquierdo: Local Storage → tu dominio
+
+4. Haz clic derecho → "Clear" o elimina estas claves:
+   - fitness_app_current_user
+   - fitness_app_token
+   - fitness_app_users
+
+5. Recarga la página (F5)
+
+6. Volverás al Onboarding
+
+═══════════════════════════════════════════════════════════════════════
+
+OPCIÓN 3: Verificar en Consola
+──────────────────────────────────────────────────────────────────────
+
+1. Abre la consola del navegador (F12)
+
+2. Pega este código:
+
+```javascript
+// Verificar si los componentes existen
+console.log('¿Existe FoodScanner?',
+  document.querySelector('[class*="Dialog"]') ? 'Sí (modal abierto)' : 'No visible');
+
+// Ver estado del localStorage
+console.log('Usuario actual:',
+  JSON.parse(localStorage.getItem('fitness_app_current_user') || 'null'));
+
+// Forzar cierre de sesión
+// localStorage.removeItem('fitness_app_current_user');
+// localStorage.removeItem('fitness_app_token');
+// location.reload();
+```
+
+═══════════════════════════════════════════════════════════════════════
+
+DEBUGGING PASO A PASO:
+──────────────────────────────────────────────────────────────────────
+
+1️⃣  ¿La aplicación carga?
+    → Deberías ver la pantalla de Onboarding
+    → Si no: verifica que el servidor esté corriendo
+
+2️⃣  ¿Puedes completar el Onboarding?
+    → Llena todos los campos de los 4 pasos
+    → Haz clic en "Comenzar"
+
+3️⃣  ¿Llegas al Dashboard?
+    → Verás gráficos y el botón "Añadir Alimento"
+    → Si no: abre la consola (F12) y busca errores
+
+4️⃣  ¿Puedes abrir "Añadir Alimento"?
+    → Haz clic en el botón verde con "+"
+    → Si no responde: verifica errores en consola
+
+5️⃣  ¿Ves las pestañas?
+    → "Buscar Alimento" | "Crear Personalizado"
+    → Asegúrate de estar en "Buscar Alimento"
+
+6️⃣  ¿Ves el campo de búsqueda?
+    → Icono de lupa 🔍
+    → Input de texto
+
+7️⃣  ¿Ves el botón del escáner?
+    → Justo debajo del campo de búsqueda
+    → Color morado/índigo
+    → Icono de cámara 📷
+    → Texto: "Escanear Alimento con Cámara"
+
+═══════════════════════════════════════════════════════════════════════
+
+POSIBLES ERRORES Y SOLUCIONES:
+──────────────────────────────────────────────────────────────────────
+
+❌ Error: "Cannot read property 'map' of undefined"
+   ✅ Solución: Limpia el localStorage y reinicia
+
+❌ Error: "FoodScanner is not defined"
+   ✅ Solución: Verifica que existe src/app/components/FoodScanner.tsx
+
+❌ Error: "getUserMedia is not a function"
+   ✅ Solución: Necesitas HTTPS o localhost
+
+❌ El modal no se abre
+   ✅ Solución: Verifica en consola si hay errores de React
+
+❌ El botón no aparece
+   ✅ Solución: Verifica que estés en la pestaña correcta
+
+═══════════════════════════════════════════════════════════════════════
+
+VERIFICAR ARCHIVOS:
+──────────────────────────────────────────────────────────────────────
+
+Ejecuta estos comandos en la terminal:
+
+# 1. Verificar que FoodScanner existe
+ls -la src/app/components/FoodScanner.tsx
+
+# 2. Verificar que AddFood tiene el import
+grep -n "FoodScanner" src/app/components/AddFood.tsx
+
+# 3. Verificar que el botón está en el código
+grep -n "Escanear Alimento con Cámara" src/app/components/AddFood.tsx
+
+# 4. Verificar componentes UI
+ls src/app/components/ui/dialog.tsx
+ls src/app/components/ui/button.tsx
+
+═══════════════════════════════════════════════════════════════════════
+
+Si NADA de esto funciona:
+──────────────────────────────────────────────────────────────────────
+
+1. Comparte el mensaje de error exacto de la consola
+2. Indica en qué pantalla estás atascado
+3. Envía un screenshot si es posible
+
+═══════════════════════════════════════════════════════════════════════

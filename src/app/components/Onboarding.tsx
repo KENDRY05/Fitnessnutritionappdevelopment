@@ -11,9 +11,13 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { Target, Activity, User, TrendingUp, TrendingDown, Zap, Scale } from 'lucide-react';
+import { Target, Activity, User, TrendingUp, TrendingDown, Zap, Scale, ArrowLeft } from 'lucide-react';
 
-export function Onboarding() {
+interface OnboardingProps {
+  onSwitchToLogin: () => void;
+}
+
+export function Onboarding({ onSwitchToLogin }: OnboardingProps) {
   const { register } = useAuth();
   const [step, setStep] = useState(1);
   const [error, setError] = useState('');
@@ -21,6 +25,7 @@ export function Onboarding() {
   // Datos del formulario
   const [formData, setFormData] = useState({
     email: '',
+    password: '',
     name: '',
     gender: 'male' as Gender,
     age: '',
@@ -39,13 +44,19 @@ export function Onboarding() {
       setError('');
 
       // Validación
-      if (!formData.email || !formData.name) {
+      if (!formData.email || !formData.name || !formData.password) {
         setError('Por favor completa todos los campos');
+        return;
+      }
+
+      if (formData.password.length < 6) {
+        setError('La contraseña debe tener al menos 6 caracteres');
         return;
       }
 
       await register({
         email: formData.email,
+        password: formData.password,
         name: formData.name,
         gender: formData.gender,
         age: parseInt(formData.age),
@@ -60,8 +71,12 @@ export function Onboarding() {
   };
 
   const nextStep = () => {
-    if (step === 1 && (!formData.email || !formData.name)) {
-      setError('Por favor completa tu email y nombre');
+    if (step === 1 && (!formData.email || !formData.name || !formData.password)) {
+      setError('Por favor completa todos los campos');
+      return;
+    }
+    if (step === 1 && formData.password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres');
       return;
     }
     if (step === 2 && (!formData.age || !formData.weight || !formData.height)) {
@@ -127,6 +142,18 @@ export function Onboarding() {
                   placeholder="Tu nombre"
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Contraseña</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Mínimo 6 caracteres"
+                  value={formData.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  autoComplete="new-password"
                 />
               </div>
 
@@ -303,6 +330,19 @@ export function Onboarding() {
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {error}
+            </div>
+          )}
+
+          {/* Enlace al Login */}
+          {step === 1 && (
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={onSwitchToLogin}
+                className="text-sm text-indigo-600 hover:text-indigo-800 hover:underline"
+              >
+                ¿Ya tienes cuenta? Inicia sesión aquí
+              </button>
             </div>
           )}
 

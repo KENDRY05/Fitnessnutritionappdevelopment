@@ -15,13 +15,26 @@ Aplicación web completa para el conteo de macros y seguimiento de objetivos de 
 
 ## 🎯 Cómo Funciona
 
-### 1. Registro Inicial (Onboarding)
+### 1. Login / Registro
 
-Al abrir la aplicación por primera vez, completa un proceso de 4 pasos:
+**Primera Vez:**
+- Al abrir la aplicación, verás la pantalla de **Login**
+- Si no tienes cuenta, haz clic en **"Crear Cuenta Nueva"**
+- Completa el proceso de registro de 4 pasos
+
+**Usuarios Existentes:**
+- Ingresa tu email y contraseña
+- Haz clic en **"Iniciar Sesión"**
+- Accederás directamente al Dashboard
+
+### 2. Proceso de Registro (Onboarding)
+
+Si es tu primera vez, completa un proceso de 4 pasos:
 
 **Paso 1 - Información Básica:**
 - Email
 - Nombre
+- Contraseña (mínimo 6 caracteres)
 - Género (Masculino/Femenino)
 
 **Paso 2 - Datos Físicos:**
@@ -198,6 +211,8 @@ La aplicación es completamente responsiva y funciona perfectamente en dispositi
 
 - `ARQUITECTURA_BACKEND.md` - Arquitectura completa y guía de migración a backend real
 - `GUIA_ESCANER_ALIMENTOS.md` - Guía completa de integración de escáner con APIs de IA (Clarifai, Google Vision, Nutritionix)
+- `AUTENTICACION.md` - Sistema de Login/Registro y migración a autenticación segura con JWT
+- `INICIO_RAPIDO.md` - Guía de inicio rápido con instrucciones paso a paso
 
 ## 🎓 Fundamentos Científicos
 
